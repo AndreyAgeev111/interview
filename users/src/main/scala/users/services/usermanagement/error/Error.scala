@@ -1,4 +1,4 @@
-package users.services.usermanagement
+package users.services.usermanagement.error
 
 import scala.util.control.NoStackTrace
 

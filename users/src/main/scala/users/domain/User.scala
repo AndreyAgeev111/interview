@@ -13,9 +13,6 @@ final case class User(
     password: Option[Password],
     metadata: User.Metadata
 ) {
-  def status: User.Status =
-    User.status(this)
-
   def isActive: Boolean = status === User.Status.Active
   def isBlocked: Boolean = status === User.Status.Blocked
   def isDeleted: Boolean = status === User.Status.Deleted
@@ -37,6 +34,9 @@ final case class User(
 
   def delete(at: OffsetDateTime): User =
     User.delete(this, at)
+
+  private def status: User.Status =
+    User.status(this)
 }
 
 object User {
@@ -59,7 +59,7 @@ object User {
   )
 
   sealed trait Status
-  object Status {
+  private object Status {
     final case object Active extends Status
     final case object Blocked extends Status
     final case object Deleted extends Status

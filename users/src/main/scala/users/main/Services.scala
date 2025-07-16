@@ -1,11 +1,11 @@
 package users.main
 
 import cats.data._
-
+import cats.effect.IO
 import users.config._
 import users.services._
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
 object Services {
   val reader: Reader[(ServicesConfig, Executors, Repositories), Services] =
@@ -13,26 +13,21 @@ object Services {
 
   val fromApplicationConfig: Reader[ApplicationConfig, Services] =
     (for {
-      config ← ServicesConfig.fromApplicationConfig
-      executors ← Executors.fromApplicationConfig
-      repositories ← Repositories.fromApplicationConfig
+      config <- ServicesConfig.fromApplicationConfig
+      executors <- Executors.fromApplicationConfig
+      repositories <- Repositories.fromApplicationConfig
     } yield (config, executors, repositories)) andThen reader
 }
 
-final case class Services(
-    config: ServicesConfig,
-    executors: Executors,
-    repositories: Repositories
-) {
+final case class Services(config: ServicesConfig, executors: Executors, repositories: Repositories) {
   import executors._
   import repositories._
 
-  implicit val ec = serviceExecutor
+  implicit val ec: ExecutionContext = serviceExecutor
 
-  final val userManagement: UserManagement[Future[?]] =
+  val userManagement: UserManagement[IO] =
     UserManagement.unreliable(
       UserManagement.default(userRepository),
       config.users
     )
-
 }

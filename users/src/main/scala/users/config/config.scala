@@ -16,7 +16,7 @@ object ExecutorsConfig {
     Reader(_.executors)
 
   case class ServicesConfig(
-      parallellism: Int
+      parallelism: Int
   )
 }
 

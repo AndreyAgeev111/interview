@@ -18,7 +18,7 @@ private[users] class InMemoryRepository extends UserRepository {
 
   def insert(user: User): Future[Done] =
     Future.successful {
-      UserMap + (user.id → user)
+      UserMap.update(user.id, user)
       Done
     }
 
@@ -28,7 +28,7 @@ private[users] class InMemoryRepository extends UserRepository {
   def getByUserName(userName: UserName): Future[Option[User]] =
     Future.successful {
       UserMap.collectFirst {
-        case (_, user) if user.userName === userName ⇒ user
+        case (_, user) if user.userName === userName => user
       }
     }
 

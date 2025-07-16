@@ -1,3 +1,7 @@
 package users.domain
 
-final case object Done
+import derevo.circe.decoder
+import derevo.derive
+
+@derive(decoder)
+case object Done
