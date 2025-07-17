@@ -1,6 +1,6 @@
-package forex.services.rates
+package forex.services.rates.error
 
-object errors {
+object Errors {
 
   sealed trait Error
   object Error {

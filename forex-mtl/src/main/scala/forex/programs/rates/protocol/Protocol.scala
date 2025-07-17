@@ -1,4 +1,4 @@
-package forex.programs.rates
+package forex.programs.rates.protocol
 
 import forex.domain.Currency
 

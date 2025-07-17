@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  oneframe:
+    image: paidyinc/one-frame
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  forex-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ONE_FRAME_TOKEN: ${ONE_FRAME_TOKEN}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - oneframe
